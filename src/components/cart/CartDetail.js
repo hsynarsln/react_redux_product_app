@@ -16,7 +16,7 @@ const CartDetail = props => {
     <div>
       {props.cart.length < 1 ? (
         <Alert color='secondary'>
-          There are not any item in your cart. Please go to{' '}
+          There is not any item in your cart. Please go to{' '}
           <Link to='/'>
             <a className='alert-link'>home page</a>
           </Link>
