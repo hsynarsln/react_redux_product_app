@@ -43,7 +43,7 @@ export const getProducts = categoryId => {
 //*-------------------------------------------------------------------------------
 export const saveProductAPI = product => {
   //! ( id geldiyse --> update, id gelmediyse --> add)
-  return fetch('http://localhost:3000/products/' + (product.id || ''), {
+  return fetch('https://product-app-backend.herokuapp.com/products/' + (product.id || ''), {
     method: product.id ? 'PUT' : 'POST', //! product.id varsa PUT yoksa POST
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(product) //! göndereceğimiz product BU!!!
