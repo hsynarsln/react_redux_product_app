@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export const successNote = msg =>
   toast.success(msg, {
-    position: 'top-right',
+    position: 'bottom-left',
     autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -14,7 +14,7 @@ export const successNote = msg =>
 
 export const infoNote = msg =>
   toast.info(msg, {
-    position: 'top-right',
+    position: 'bottom-left',
     autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
