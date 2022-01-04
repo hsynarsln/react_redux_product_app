@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCategories } from '../../redux/actions/categoryActions';
-import { saveProduct } from '../../redux/actions/productActions';
+import * as categoryActions from '../../redux/actions/categoryActions';
+import * as productActions from '../../redux/actions/productActions';
 import ProductDetail from './ProductDetail';
 
 //! ...props --> mevcut propları genişletiyoruz.
 const AddOrUpdateProduct = ({ products, categories, getProducts, getCategories, saveProduct, ...props }) => {
+  const categoryList = useSelector(state => state.categoryListReducer);
+  const dispatch = useDispatch();
+
   const [product, setProduct] = useState({});
   //! validation
   const [errors, setErrors] = useState({});
@@ -20,8 +23,8 @@ const AddOrUpdateProduct = ({ products, categories, getProducts, getCategories, 
   // console.log(item);
 
   useEffect(() => {
-    if (categories.length === 0) {
-      getCategories();
+    if (categoryList.length === 0) {
+      dispatch(categoryActions.getCategories());
     }
     //! add or update
     item !== undefined && setProduct(item);
@@ -48,30 +51,16 @@ const AddOrUpdateProduct = ({ products, categories, getProducts, getCategories, 
 
   const handleSubmit = event => {
     event.preventDefault();
-    saveProduct(product);
+    dispatch(productActions.saveProduct(product));
     // navigate(-1); //! bir önceki sayfaya gider
     navigate('/', { replace: true });
   };
 
   return (
     <div>
-      <ProductDetail product={product} categories={categories} onChange={handleChange} onSubmit={handleSubmit} errors={errors} />
+      <ProductDetail product={product} categories={categoryList} onChange={handleChange} onSubmit={handleSubmit} errors={errors} />
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  //! mevcut state'imizi oluşturuyoruz.
-  return {
-    // product,
-    products: state.productListReducer,
-    categories: state.categoryListReducer
-  };
-};
-
-const mapDispatchToProps = {
-  getCategories,
-  saveProduct
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddOrUpdateProduct);
+export default AddOrUpdateProduct;
