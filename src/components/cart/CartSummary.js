@@ -1,26 +1,29 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, NavItem, NavLink, UncontrolledDropdown } from 'reactstrap';
-import { bindActionCreators } from 'redux';
 import * as cartActions from '../../redux/actions/cartActions';
 import { infoNote } from '../root/CustomToastify';
 
-const CartSummary = props => {
+const CartSummary = () => {
+  const cart = useSelector(state => state.cartReducer);
+  const dispatch = useDispatch();
+
   const removeFromCart = product => {
-    props.actions.removeFromCart(product);
+    dispatch(cartActions.removeFromCart(product));
+    // props.actions.removeFromCart(product);
     infoNote(`${product.productName} successfully deleted from cart!`);
   };
 
   return (
     <div>
-      {props.cart.length > 0 ? (
+      {cart.length > 0 ? (
         <UncontrolledDropdown inNavbar nav>
           <DropdownToggle caret nav>
             Your Cart
           </DropdownToggle>
           <DropdownMenu right>
-            {props.cart.map(cartItem => (
+            {cart.map(cartItem => (
               <DropdownItem key={cartItem.product.id} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Badge color='danger' onClick={() => removeFromCart(cartItem.product)}>
                   X
@@ -44,18 +47,18 @@ const CartSummary = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    cart: state.cartReducer
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     // cart: state.cartReducer
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: {
-      removeFromCart: bindActionCreators(cartActions.removeFromCart, dispatch)
-    }
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     actions: {
+//       // removeFromCart: bindActionCreators(cartActions.removeFromCart, dispatch)
+//     }
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartSummary);
+export default CartSummary;

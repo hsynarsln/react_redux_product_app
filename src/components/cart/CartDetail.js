@@ -1,20 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert, Button, Table } from 'reactstrap';
-import { bindActionCreators } from 'redux';
 import * as cartActions from '../../redux/actions/cartActions';
 import { infoNote } from '../root/CustomToastify';
 
 const CartDetail = props => {
+  const cart = useSelector(state => state.cartReducer);
+  const dispatch = useDispatch();
+
   const removeFromCart = product => {
-    props.actions.removeFromCart(product);
+    dispatch(cartActions.removeFromCart(product));
+    // props.actions.removeFromCart(product);
     infoNote(`${product.productName} successfully deleted from cart!`);
   };
 
   return (
     <div>
-      {props.cart.length < 1 ? (
+      {cart.length < 1 ? (
         <Alert color='secondary'>
           There is not any item in your cart. Please go to{' '}
           <Link to='/'>
@@ -33,7 +36,7 @@ const CartDetail = props => {
             </tr>
           </thead>
           <tbody>
-            {props.cart.map(cartItem => (
+            {cart.map(cartItem => (
               <tr key={cartItem.product.id}>
                 <th scope='row'>{cartItem.product.id}</th>
                 <td>{cartItem.product.productName}</td>
@@ -53,18 +56,20 @@ const CartDetail = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    cart: state.cartReducer
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     cart: state.cartReducer
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: {
-      removeFromCart: bindActionCreators(cartActions.removeFromCart, dispatch)
-    }
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     actions: {
+//       removeFromCart: bindActionCreators(cartActions.removeFromCart, dispatch)
+//     }
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartDetail);
+// export default connect(mapStateToProps, mapDispatchToProps)(CartDetail);
+
+export default CartDetail;
