@@ -4,7 +4,7 @@ const TextInput = ({ name, label, onChange, placeHolder, value, error }) => {
   //! bootstrap ile alakalı
   let wrapperClass = 'form-group';
 
-  if (error && error.lenght > 0) {
+  if (error && error.length > 0) {
     wrapperClass += ' has-error';
   }
 
